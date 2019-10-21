@@ -12,14 +12,15 @@ exports.DataSet = (req, res) => {
 
 exports.AllCalculations = (req, res) => {
   let object = JSON.parse(req.body.data);
+
   let responseObject = [];
+
   let payload = [];
+
   let totalSale = object.reduce((accumulator, price) => {
     return accumulator + price["Total Price"];
   }, 0);
-  responseObject.push({
-    "Total_Sale": totalSale
-  });
+
   months.forEach((month) => {
     let monthlyRevenue = object.filter((monthData) => {
         let date = new Date(monthData.Date);
@@ -83,8 +84,11 @@ exports.AllCalculations = (req, res) => {
       payload.push(monthlyData);
     }
   });
+
   responseObject.push({
+    'Total_Sale': totalSale,
     'Data': payload
   });
+  
   res.status(200).send(responseObject);
 };
