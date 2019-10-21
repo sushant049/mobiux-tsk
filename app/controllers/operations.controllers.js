@@ -86,7 +86,8 @@ exports.AllCalculations = (req, res) => {
   });
 
   responseObject.push({
-    'Total_Sale': totalSale,
+    'Total_Sale': totalSale
+  },{
     'Data': payload
   });
   
