@@ -30,7 +30,14 @@ exports.AllCalculations = (req, res) => {
         "Sales": data['Total Price']
       };
     });
-
+    
+    // calculating monthly revenue
+    let MonthlyRevenue = MonthlyFilteredData.map((data) => {
+      return data.Sales;
+    }).reduce((prevValue, currentValue) => {
+      return prevValue + currentValue;
+    }, 0);
+    if (MonthlyRevenue != 0) {
     // filtering out the individual SKU(s)
     let AllSKU = MonthlyFilteredData.map((data) => {
       return data.SKU
@@ -39,13 +46,6 @@ exports.AllCalculations = (req, res) => {
     let FilteredSKU = AllSKU.filter((v, i) => {
       return AllSKU.indexOf(v) === i
     });
-
-    // calculating monthly revenue
-    let MonthlyRevenue = MonthlyFilteredData.map((data) => {
-      return data.Sales;
-    }).reduce((prevValue, currentValue) => {
-      return prevValue + currentValue;
-    }, 0);
 
     // analysing the popular item and best seller item
     GetMonthlyPopularItem = () => {
@@ -109,7 +109,7 @@ exports.AllCalculations = (req, res) => {
       previousData[1] = (previousData[1] === undefined || currentData > previousData[1]) ? currentData : previousData[1]
       return previousData;
     }, []);
-    if (MonthlyRevenue != 0) {
+    
       let MonthlyData = {
         "month": month,
         "Revenue": MonthlyRevenue,
