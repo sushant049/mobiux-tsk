@@ -7,7 +7,7 @@ exports.DataSet = (req, res) => {
       throw err;
     return data;
   });
-  res.send(JSON.parse(object));
+  res.status(200).send(JSON.parse(object));
 };
 
 exports.AllCalculations = (req, res) => {
@@ -30,8 +30,6 @@ exports.AllCalculations = (req, res) => {
         "Sales": data['Total Price']
       };
     });
-
-    // console.log(MonthlyFilteredData);
 
     // filtering out the individual SKU(s)
     let AllSKU = MonthlyFilteredData.map((data) => {
@@ -95,9 +93,8 @@ exports.AllCalculations = (req, res) => {
     let MonthlyBestSeller = GetMonthlyBestSeller();
 
     // getting popular item's min, max and avg number of sales
-    let PopularItemData = object.filter((data) => {
-        let date = new Date(data.Date);
-        return data.SKU == MonthlyPopularItem.SKU && (date.getMonth() + 1) == months.indexOf(month) + 1;
+    let PopularItemData = MonthlyFilteredData.filter((data) => {
+        return data.SKU == MonthlyPopularItem.SKU;
       })
       .map((filteredData) => {
         return filteredData.Quantity;
